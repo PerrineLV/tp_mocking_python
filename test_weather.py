@@ -80,3 +80,26 @@ class TestWeather(unittest.TestCase):
             mock_file.assert_called_with(self.filename, "w")
 
             pass
+
+        @patch('weather_service.requests.get')
+        def test_multiple_cities(self, mock_get):
+            """Test plusieurs villes avec une seule méthode"""
+
+            cities_and_temps = [
+                ("Paris", 25.0),
+                ("Londres", 18.5),
+                ("Tokyo", 30.2)
+            ]
+
+            for city, expected_temp in cities_and_temps:
+                with self.subTest(city=city):
+                    # Configurez le mock pour cette ville
+                    mock_get.return_value = Mock(status_code=200, json=lambda: {
+                        'main': {'temp': expected_temp}
+                    })
+
+                    # Testez get_temperature(city)
+                    result = get_temperature(city)
+
+                    # Vérifiez le résultat
+                    self.assertEqual(result, expected_temp)
