@@ -40,7 +40,7 @@ class TestWeather(unittest.TestCase):
         mock_response = Mock()
         mock_response.status_code = 404
 
-        # TODO: Configurez mock_get.return_value
+        # Configurez mock_get.return_value
         mock_get.return_value = mock_response
 
         # Testez get_temperature("VilleInexistante")
