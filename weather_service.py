@@ -51,3 +51,23 @@ def save_weather_report(city, filename="weather_log.json"):
         json.dump(reports, f)
 
     return True
+
+def get_forecast(city, days=5):
+    """Récupère la prévision météo pour plusieurs jours"""
+    url = f"http://api.openweathermap.org/data/2.5/forecast/daily"
+    params = {
+        'q': city,
+        'cnt': days,
+        'appid': '441f54eb9b8819b3a05d1674294bb055',
+        'units': 'metric'
+    }
+
+    try:
+        response = requests.get(url, params=params)
+        if response.status_code == 200:
+            data = response.json()
+            return data['list']
+        else:
+            return None
+    except requests.exceptions.RequestException:
+        return None
