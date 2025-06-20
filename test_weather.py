@@ -1,5 +1,6 @@
 import unittest
 from unittest.mock import Mock, patch
+import requests
 from weather_service import get_temperature
 class TestWeather(unittest.TestCase):
 
@@ -29,7 +30,7 @@ class TestWeather(unittest.TestCase):
 
         # 6. VÉRIFIEZ que requests.get a été appelé correctement
         mock_get.assert_called_once_with('http://api.openweathermap.org/data/2.5/weather',
-                                           params={'q': 'Paris', 'appid': 'fake_api_key', 'units': 'metric'})
+                                           params={'q': 'Paris', 'appid': '441f54eb9b8819b3a05d1674294bb055', 'units': 'metric'})
 
     @patch('weather_service.requests.get')
     def test_get_temperature_city_not_found(self, mock_get):
@@ -47,6 +48,20 @@ class TestWeather(unittest.TestCase):
 
         # Vérifiez que le résultat est None
         self.assertIsNone(result)
+
+    @patch('weather_service.requests.get')
+    def test_get_temperature_network_error(self, mock_get):
+        """Test quand il y a une erreur réseau"""
+
+        # Configurez le mock pour lever une exception
+        # Indice: mock_get.side_effect = requests.exceptions.RequestException()
+        mock_get.side_effect = requests.exceptions.RequestException()
+
+        # Testez que votre fonction gère l'exception
+        # Vous devrez peut-être modifier weather_service.py pour gérer ce cas
+        result = get_temperature("Paris")
+
+        pass
 
     if __name__ == '__main__':
         unittest.main()
