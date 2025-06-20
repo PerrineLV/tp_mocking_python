@@ -30,6 +30,24 @@ class TestWeather(unittest.TestCase):
         # 6. VÉRIFIEZ que requests.get a été appelé correctement
         mock_get.assert_called_once_with('http://api.openweathermap.org/data/2.5/weather',
                                            params={'q': 'Paris', 'appid': 'fake_api_key', 'units': 'metric'})  
+        
+
+    @patch('weather_service.requests.get')
+    def test_get_temperature_city_not_found(self, mock_get):
+        """Test quand la ville n'existe pas"""
+
+        # Créez un Mock qui retourne status_code = 404
+        mock_response = Mock()
+        mock_response.status_code = 404
+
+        # TODO: Configurez mock_get.return_value
+        mock_get.return_value = mock_response
+
+        # Testez get_temperature("VilleInexistante")
+        result = get_temperature("VilleInexistante")
+
+        # Vérifiez que le résultat est None
+        self.assertIsNone(result)
 
     if __name__ == '__main__':
         unittest.main()

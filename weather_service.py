@@ -10,6 +10,8 @@ def get_temperature(city):
 
     response = requests.get(url, params=params)
 
+    print(response.status_code)  # Pour déboguer, à supprimer en prod
+
     if response.status_code == 200:
         data = response.json()
         return data['main']['temp']
